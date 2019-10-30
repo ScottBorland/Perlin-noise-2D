@@ -4,33 +4,38 @@ var inc = 0.01;
 var start = 0;
 
 function setup() {
-	createCanvas(windowWidth, windowHeight);
+	createCanvas(200, 200);
+	pixelDensity(1);
 }
 
 function draw() {
-	background(51);
-	stroke(255);
-	noFill();
-	beginShape();
-	var xoff = start;
+	var yoff = 0;
+
+	loadPixels();
+	for(var y = 0; y < height; y++){
+		var xoff = 0;
 	for(var x = 0; x < width; x++){
-		stroke(255);
-		var y = noise(xoff) * height;
-		vertex(x, y);
+			var index = (x + y * width) * 4;
+			var r = noise(xoff, yoff) * 255;
+			pixels[index + 0] = r;
+			pixels[index + 1] = r;
+			pixels[index + 2] = r;
+			pixels[index + 3] = 255;
 
-
-		xoff += inc;
+			xoff += inc;
+		}
+		yoff += inc;
 	}
-	endShape();
-	start += inc;
-	//noLoop();
-
-	/*var x = map(noise(xoff1), 0, 1, 0, width);
-	var y = map(noise(xoff2), 0, 1, 0, height);
-
-	xoff1 += 0.02;
-	xoff2 += 0.02;
-
-	ellipse(x, y, 24, 24);*/
-
+	updatePixels();
 }
+/* cool static effect
+for(var x = 0; x < width; x++){
+	for(var y = 0; y < height; y++){
+		var index = (x + y * width) * 4;
+		var r = random(255);
+		pixels[index + 0] = r;
+		pixels[index + 1] = r;
+		pixels[index + 2] = r;
+		pixels[index + 3] = 255;
+	}
+}*/
